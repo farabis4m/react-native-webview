@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.Manifest;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Environment;
 import androidx.annotation.RequiresApi;
@@ -27,6 +28,7 @@ import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.PermissionRequest;
+import android.webkit.SslErrorHandler;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -770,6 +772,12 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
           webView,
           new TopHttpErrorEvent(webView.getId(), eventData));
       }
+    }
+
+    @Override
+    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+      // before: handler.cancel();
+      handler.proceed();
     }
 
     protected void emitFinishEvent(WebView webView, String url) {
