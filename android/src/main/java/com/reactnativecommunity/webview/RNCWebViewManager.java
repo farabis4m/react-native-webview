@@ -120,7 +120,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   protected static final String REACT_CLASS = "RNCWebView";
   protected static final String HTML_ENCODING = "UTF-8";
   protected static final String HTML_MIME_TYPE = "text/html";
-  protected static final String JAVASCRIPT_INTERFACE = "ReactNativeWebView";
+  protected static final String JAVASCRIPT_INTERFACE = "Android"; // changed from ReactNativeWebView
   protected static final String HTTP_METHOD_POST = "POST";
   // Use `webView.loadUrl("about:blank")` to reliably reset the view
   // state and release page resources (including any running JavaScript).
@@ -268,7 +268,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
         break;
       case "LOAD_CACHE_ELSE_NETWORK":
         cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK;
-        break;  
+        break;
       case "LOAD_NO_CACHE":
         cacheMode = WebSettings.LOAD_NO_CACHE;
         break;
@@ -392,7 +392,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
   public void setMessagingEnabled(WebView view, boolean enabled) {
     ((RNCWebView) view).setMessagingEnabled(enabled);
   }
-   
+
   @ReactProp(name = "incognito")
   public void setIncognito(WebView view, boolean enabled) {
     // Remove all previous cookies
@@ -692,7 +692,6 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
     @Override
     public void onPageFinished(WebView webView, String url) {
       super.onPageFinished(webView, url);
-
       if (!mLastLoadFailed) {
         RNCWebView reactWebView = (RNCWebView) webView;
 
@@ -881,8 +880,8 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
       final String url = webView.getUrl();
       if (
         url != null
-        && activeUrl != null
-        && !url.equals(activeUrl)
+          && activeUrl != null
+          && !url.equals(activeUrl)
       ) {
         return;
       }
@@ -1097,16 +1096,16 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
       if (mOnScrollDispatchHelper.onScrollChanged(x, y)) {
         ScrollEvent event = ScrollEvent.obtain(
-                this.getId(),
-                ScrollEventType.SCROLL,
-                x,
-                y,
-                mOnScrollDispatchHelper.getXFlingVelocity(),
-                mOnScrollDispatchHelper.getYFlingVelocity(),
-                this.computeHorizontalScrollRange(),
-                this.computeVerticalScrollRange(),
-                this.getWidth(),
-                this.getHeight());
+          this.getId(),
+          ScrollEventType.SCROLL,
+          x,
+          y,
+          mOnScrollDispatchHelper.getXFlingVelocity(),
+          mOnScrollDispatchHelper.getYFlingVelocity(),
+          this.computeHorizontalScrollRange(),
+          this.computeVerticalScrollRange(),
+          this.getWidth(),
+          this.getHeight());
 
         dispatchEvent(this, event);
       }
@@ -1128,10 +1127,20 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
        * This method is called whenever JavaScript running within the web view calls:
        * - window[JAVASCRIPT_INTERFACE].postMessage
        */
+      //      @JavascriptInterface
+      //      public void postMessage(String message) {
+      //        mContext.onMessage(message);
+      //      }
+
+      /**
+       * This method is called whenever JavaScript running within the web view calls:
+       * - window[JAVASCRIPT_INTERFACE].onJson
+       */
       @JavascriptInterface
-      public void postMessage(String message) {
+      public void onJson(String message) {
         mContext.onMessage(message);
       }
+
     }
   }
 }
